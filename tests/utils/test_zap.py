@@ -30,9 +30,8 @@ class TestZapUtils_run_zap(BaseTestCase):
             zap_port = "8080"
 
             run_zap(
-                zap_host=zap_host,
-                zap_port=zap_port,
-                zap_output_file_path=zap_output_file_path,
+                '-cmd', '-h',
+                zap_output_file_path=zap_output_file_path
             )
 
             mock_open.assert_called_with(zap_output_file_path, 'w')
@@ -52,10 +51,10 @@ class TestZapUtils_run_zap(BaseTestCase):
             )
 
             mocksh().assert_called_once_with(
-                '-daemon',
-                '-dir', '/home/.ZAP',
-                '-host', zap_host,
-                '-port', zap_port,
+                '-dir',
+                '/home/.ZAP',
+                '-cmd',
+                '-h',
                 _out=Any(StringIO),
                 _err=Any(StringIO)
             )

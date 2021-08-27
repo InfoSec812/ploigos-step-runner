@@ -10,10 +10,8 @@ from ploigos_step_runner.utils.io import \
 
 
 def run_zap( #pylint: disable=too-many-arguments
-    zap_host,
-    zap_port,
-    zap_output_file_path,
-    additional_arguments=None
+    *args,
+    zap_output_file_path='/tmp/zap_command_output.txt'
 ):
     """Runs zap using the given configuration.
 
@@ -30,9 +28,6 @@ def run_zap( #pylint: disable=too-many-arguments
         If zap returns a none 0 exit code.
     """
 
-    if not additional_arguments:
-        additional_arguments = []
-
     # run zap
     try:
         with open(zap_output_file_path, 'w') as zap_output_file:
@@ -47,11 +42,9 @@ def run_zap( #pylint: disable=too-many-arguments
 
             zapcmd = sh.Command("/zap/zap.sh")
             zapcmd( # pylint: disable=no-member
-                '-daemon',
-                '-dir', '/home/.ZAP',
-                '-host', zap_host,
-                '-port', zap_port,
-                *additional_arguments,
+                '-dir',
+                '/home/.ZAP',
+                *args,
                 _out=out_callback,
                 _err=err_callback
             )
