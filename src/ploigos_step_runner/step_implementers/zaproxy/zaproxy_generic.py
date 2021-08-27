@@ -107,7 +107,7 @@ class ZAProxyGeneric(StepImplementer):
         zap_output_file_path,
         step_implementer_additional_arguments=None
     ):
-      """Runs zap using the configuration given to this step runner.
+        """Runs zap using the configuration given to this step runner.
 
         Parameters
         ----------
@@ -164,6 +164,7 @@ class ZAProxyGeneric(StepImplementer):
             step_result.success = False
             step_result.message = "Error executing ZAProxy command" \
                 f"More details may be found in 'zap output' report artifact: {error}"
+
         finally:
             step_result.add_artifact(
                 description="Standard out from ZAP",
