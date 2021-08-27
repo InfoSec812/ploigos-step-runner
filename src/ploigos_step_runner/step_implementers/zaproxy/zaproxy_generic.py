@@ -23,6 +23,7 @@ from ploigos_step_runner.step_implementer import StepImplementer
 from ploigos_step_runner.utils.zap import run_zap
 
 DEFAULT_CONFIG = {
+    'step_name': 'zaproxy',
     'tls-verify': True,
     'proxy-host': '127.0.0.1',
     'proxy-port': 8080,
@@ -50,22 +51,6 @@ class ZAProxyGeneric(StepImplementer):
             environment=environment
         )
 
-
-    @staticmethod
-    def step_implementer_config_defaults():
-        """Getter for the StepImplementer's configuration defaults.
-
-        Returns
-        -------
-        dict
-            Default values to use for step configuration values.
-
-        Notes
-        -----
-        These are the lowest precedence configuration values.
-        """
-        return DEFAULT_CONFIG
-
     @staticmethod
     def _required_config_or_result_keys():
         """Getter for step configuration or previous step result artifacts that are required before
@@ -83,22 +68,20 @@ class ZAProxyGeneric(StepImplementer):
         """
         return REQUIRED_CONFIG_OR_PREVIOUS_STEP_RESULT_ARTIFACT_KEYS
 
+    @staticmethod
+    def step_implementer_config_defaults():
+        """Getter for the StepImplementer's configuration defaults.
 
-    def _validate_required_config_or_previous_step_result_artifact_keys(self):
-        """Validates that the required configuration keys or previous step result artifacts
-        are set and have valid values.
+        Returns
+        -------
+        dict
+            Default values to use for step configuration values.
 
-        Validates that:
-        * required configuration is given
-        * given 'pom-file' exists
-
-        Raises
-        ------
-        AssertionError
-            If step configuration or previous step result artifacts have invalid required values
+        Notes
+        -----
+        These are the lowest precedence configuration values.
         """
-        super()._validate_required_config_or_previous_step_result_artifact_keys()
-
+        return DEFAULT_CONFIG
 
     def _run_zap_command(
         self,
@@ -121,18 +104,8 @@ class ZAProxyGeneric(StepImplementer):
             If zap returns a none 0 exit code.
         """
 
-
-        additional_arguments = []
-        if step_implementer_additional_arguments:
-            additional_arguments = \ 
-                step_implementer_additional_arguments + self.get_value('zap-additional-arguments')
-        else:
-            additional_arguments = self.get_value('zap-additional-arguments')
-
-
         run_zap(
             *args,
-            additional_arguments=additional_arguments,
             zap_output_file_path=zap_output_file_path
         )
         
@@ -164,4 +137,4 @@ class ZAProxyGeneric(StepImplementer):
                 value=zap_output_file_path
             )
 
-         return step_result
+        return step_result
