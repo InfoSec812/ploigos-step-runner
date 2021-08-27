@@ -102,8 +102,7 @@ class ZAProxyGeneric(StepImplementer):
 
     def _run_zap_command(
         self,
-        zap_host,
-        zap_port,
+        *args,
         zap_output_file_path,
         step_implementer_additional_arguments=None
     ):
@@ -132,8 +131,7 @@ class ZAProxyGeneric(StepImplementer):
 
 
         run_zap(
-            zap_host=zap_host,
-            zap_port=zap_port,
+            *args,
             additional_arguments=additional_arguments,
             zap_output_file_path=zap_output_file_path
         )
@@ -148,16 +146,10 @@ class ZAProxyGeneric(StepImplementer):
         """
         step_result = StepResult.from_step_implementer(self)
 
-        zap_host = self.get_value('proxy-host')
-        zap_port = self.get_value('proxy-port')
-        zap_apikey = self.get_value('zaproxy-api-key')
-
         #package the artifacts
         zap_output_file_path = self.write_working_file('zap_output.txt')
         try:
             self._run_zap_command(
-                zap_host=zap_host,
-                zap_port=zap_port,
                 zap_output_file_path=zap_output_file_path
             )
         except StepRunnerException as error:
