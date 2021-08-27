@@ -48,6 +48,7 @@ def run_zap( #pylint: disable=too-many-arguments
             zapcmd = sh.Command("/zap/zap.sh")
             zapcmd( # pylint: disable=no-member
                 '-daemon',
+                '-dir', '/home/.ZAP',
                 '-host', zap_host,
                 '-port', zap_proxy,
                 *additional_arguments,
