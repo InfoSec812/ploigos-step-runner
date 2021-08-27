@@ -36,3 +36,21 @@ class ZAProxyInit(ZAProxyGeneric):
     """
 
     """
+
+    def __init__(  # pylint: disable=too-many-arguments
+            self,
+            workflow_result,
+            parent_work_dir_path,
+            config,
+            environment=None
+    ):
+        super().__init__(
+            workflow_result=workflow_result,
+            parent_work_dir_path=parent_work_dir_path,
+            config=config,
+            environment=environment
+        )
+
+    def _run_step(self):  # pylint: disable=too-many-locals
+        zap_args = ['-daemon', '-host', self.config['proxy-host'], '-port', self.config['proxy-port'], '-newsession',
+                    self.__parent_work_dir_path, self.config['zap_output_file_path'], '-config', 'api.key=%s' % self.config['zaproxy-api-key']]
