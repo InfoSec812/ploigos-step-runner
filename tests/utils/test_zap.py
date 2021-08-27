@@ -43,8 +43,9 @@ class TestMavenUtils_run_maven(BaseTestCase):
                 ])
             ])
 
-            mvn_mock.assert_called_once_with(
+            zap_mock.assert_called_once_with(
                 '-daemon',
+                '-dir', '/home/.ZAP',
                 '-host', '/fake/pom.xml',
                 '-port', '/fake/settings.xml',
                 _out=Any(StringIO),

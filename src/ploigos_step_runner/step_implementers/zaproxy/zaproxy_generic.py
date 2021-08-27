@@ -102,6 +102,8 @@ class ZAProxyGeneric(StepImplementer):
 
     def _run_zap_command(
         self,
+        zap_host,
+        zap_port,
         zap_output_file_path,
         step_implementer_additional_arguments=None
     ):
@@ -120,9 +122,6 @@ class ZAProxyGeneric(StepImplementer):
             If zap returns a none 0 exit code.
         """
 
-        zap_host = self.get_value('proxy-host')
-        zap_port = self.get_value('proxy-port')
-        zap_apikey = self.get_value('zaproxy-api-key')
 
         additional_arguments = []
         if step_implementer_additional_arguments:
@@ -148,6 +147,10 @@ class ZAProxyGeneric(StepImplementer):
             Object containing the dictionary results of this step.
         """
         step_result = StepResult.from_step_implementer(self)
+
+        zap_host = self.get_value('proxy-host')
+        zap_port = self.get_value('proxy-port')
+        zap_apikey = self.get_value('zaproxy-api-key')
 
         #package the artifacts
         zap_output_file_path = self.write_working_file('zap_output.txt')
