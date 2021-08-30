@@ -54,3 +54,26 @@ class ZAProxyInit(ZAProxyGeneric):
     def _run_step(self):  # pylint: disable=too-many-locals
         zap_args = ['-daemon', '-host', self.config['proxy-host'], '-port', self.config['proxy-port'], '-newsession',
                     self.__parent_work_dir_path, self.config['zap_output_file_path'], '-config', 'api.key=%s' % self.config['zaproxy-api-key']]
+
+        step_result = StepResult.from_step_implementer(self)
+
+        # package the artifacts
+        zap_output_file_path = self.write_working_file(self.config['zap_output_file_path'])
+        try:
+            self._run_zap_command(
+                zap_args,
+                zap_output_file_path=zap_output_file_path
+            )
+        except StepRunnerException as error:
+            step_result.success = False
+            step_result.message = "Error executing ZAProxy command" \
+                                  f"More details may be found in 'zap output' report artifact: {error}"
+
+        finally:
+            step_result.add_artifact(
+                description="Standard out from ZAP",
+                name='zap-output',
+                value=zap_output_file_path
+            )
+
+        return step_result
